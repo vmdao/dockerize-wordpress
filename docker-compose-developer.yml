@@ -1,0 +1,35 @@
+version: '2'
+services:
+    nginx:
+        image: nginx:latest    
+        ports: 
+            - 8001:80
+        volumes: 
+            - ./config/nginx:/etc/nginx/conf.d    
+            - ./logs:/var/log/nginx
+            - ./src:/var/www/html
+        links:
+            - wordpress
+        restart: always
+    wordpress:
+        image: wordpress:4.7.4-php7.1-fpm
+        volumes: 
+            - ./src:/var/www/html
+            - ./config/php/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
+        environment:
+            - WORDPRESS_DB_NAME=wpdb    
+            - WORDPRESS_TABLE_PREFIX=wp_    
+            - WORDPRESS_DB_HOST=mysql    
+            - WORDPRESS_DB_PASSWORD=Abc@#123456
+        links:
+            - mysql
+        restart: always
+    mysql: 
+        image: mysql:latest
+        volumes: 
+            - ./db-data:/var/lib/mysql
+        environment:
+            - MYSQL_ROOT_PASSWORD=Abc@#123456
+            - MYSQL_DATABASE=wpdb
+        restart: always
+  
