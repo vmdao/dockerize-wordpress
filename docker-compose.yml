@@ -27,7 +27,7 @@ services:
     mysql: 
         image: mysql:latest
         volumes: 
-            - ./db-data:/var/lib/mysql
+            - ./config/db-data:/var/lib/mysql
         environment:
             - MYSQL_ROOT_PASSWORD=Abc@#123456
             - MYSQL_DATABASE=wpdb
